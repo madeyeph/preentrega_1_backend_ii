@@ -5,6 +5,14 @@ import { procesaErrores } from '../utils.js'
 
 export const router3 = Router()
 
+router3.get('/login', (req, res) => {
+  res.render('login', {})
+})
+
+router3.get('/register', (req, res) => {
+  res.render('register', {})
+})
+
 router3.get("/", async (req, res) =>{
   
   res.render('inicio')
