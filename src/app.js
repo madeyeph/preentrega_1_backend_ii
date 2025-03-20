@@ -5,6 +5,8 @@ import logger from "morgan"
 import cookieParser from "cookie-parser"
 import session from "express-session"
 import MongoStore from "connect-mongo"
+import { initializePassport } from "./config/passport.config.js"
+import passport from "passport"
 
 import { router as productsRouter } from "./routes/products.router.js"
 import { router2 as cartsRouter } from "./routes/carts.router.js"
@@ -30,32 +32,32 @@ app.set("views", "./src/views")
 app.use(session({
     store: MongoStore.create({
         mongoUrl: "mongodb+srv://dbenavides:CoderCoder123@cluster0.wgxwo.mongodb.net/datosProductos?retryWrites=true&w=majority&appName=Cluster0",
-        mongoOptions:{
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        },
-        ttl: 15,
+        ttl: 1000*3600*24,
     }),
     secret: 'secretCoder',
     resave: true,
     saveUninitialized: true
 }))
 
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
+app.use("/api/sessions", sessionsRouter)
+
+conectaDB(
+  "mongodb+srv://dbenavides:CoderCoder123@cluster0.wgxwo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0","datosProductos"
+)
+
 app.use("/api/products", productsRouter)
 app.use("/api/carts", cartsRouter)
 app.use("/", viewsRouter)
 app.use("/cookies", cookiesRouter)
-app.use("/api/sessions", sessionsRouter)
 
 
 
 app.listen(PORT, () => {
   console.log(`Servidor en línea en el puerto ${PORT}!`)
 })
-
-conectaDB(
-    "mongodb+srv://dbenavides:CoderCoder123@cluster0.wgxwo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0","datosProductos"
-)
 
 app.use((err, req, res, next) => {
   console.error(err.stack)

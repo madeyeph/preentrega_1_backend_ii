@@ -13,12 +13,11 @@ router3.get('/register', (req, res) => {
   res.render('register', {})
 })
 
-router3.get("/", async (req, res) =>{
+//router3.get("/", async (req, res) =>{
   
-  res.render('inicio')
+  //res.render('inicio')
 
-})
-
+//})
 
 router3.get("/products", async (req, res) => {
   try {
