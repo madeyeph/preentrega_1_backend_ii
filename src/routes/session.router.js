@@ -1,8 +1,10 @@
 import { Router } from "express"
 import { usersModel } from "../dao/models/usermodels.js"
 import { authentication } from "../middlewares/auth.middlewares.js"
+import { authorization } from "../middlewares/authorization.middlewares.js"
 import { createHash, isValidPassword } from "../bcrypt.js"
 import passport from "passport"
+import { passportCall } from "../middlewares/passportCall.js"
 import { generateToken, authToken } from "../authToken.js"
 
 export const router5 = Router()
@@ -24,7 +26,7 @@ router5.post('/register', async (req, res) => {
     }
 
     const result = await usersModel.create(newUser)
-    res.send({status: 'success', paylad: result})
+    res.send({status: 'success', payload: result})
 })
 
 router5.post('/login', async(req, res) => {
@@ -44,10 +46,15 @@ router5.post('/login', async(req, res) => {
         role: 'admin'
     })
  
-    res.send({status: 'success', token})
+    res
+        .cookie("coderCookieToken", token, {
+            maxAge: 60*60*1000,
+            httpOnly: true
+        })
+        .send({status: 'success', message: "¡Successful Log!"})
 })
 
-router5.get('/current', authToken, (req, res) => {
+router5.get('/current', passportCall('jwt'), authorization('admin'), (req, res) => {
     console.log(req.user)
-    res.send('info sensible de usuarios')
+    res.send({status: 'success', payload: req.user})
 })

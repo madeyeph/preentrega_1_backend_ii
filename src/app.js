@@ -15,8 +15,9 @@ import { router4 as cookiesRouter } from "./routes/cookies.router.js"
 import { router5 as sessionsRouter } from "./routes/session.router.js"
 
 
-const PORT = 8080
+import { configObject } from "./config/index.js"
 const app = express()
+
 
 
 app.use(express.json())
@@ -31,7 +32,7 @@ app.set("views", "./src/views")
 
 app.use(session({
     store: MongoStore.create({
-        mongoUrl: "mongodb+srv://dbenavides:CoderCoder123@cluster0.wgxwo.mongodb.net/datosProductos?retryWrites=true&w=majority&appName=Cluster0",
+        mongoUrl: configObject.mongo_url || "mongodb+srv://dbenavides:CoderCoder123@cluster0.wgxwo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
         ttl: 1000*3600*24,
     }),
     secret: 'secretCoder',
@@ -45,7 +46,7 @@ app.use(passport.session())
 app.use("/api/sessions", sessionsRouter)
 
 conectaDB(
-  "mongodb+srv://dbenavides:CoderCoder123@cluster0.wgxwo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0","datosProductos"
+  configObject.mongo_url || "mongodb+srv://dbenavides:CoderCoder123@cluster0.wgxwo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0","datosProductos"
 )
 
 app.use("/api/products", productsRouter)
@@ -55,8 +56,8 @@ app.use("/cookies", cookiesRouter)
 
 
 
-app.listen(PORT, () => {
-  console.log(`Servidor en línea en el puerto ${PORT}!`)
+app.listen(configObject.port, () => {
+  console.log(`Servidor en línea en el puerto ${configObject.port}!`)
 })
 
 app.use((err, req, res, next) => {
