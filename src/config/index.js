@@ -11,7 +11,8 @@ dotenv.config({
 export const configObject = {
     port: process.env.PORT || 8080,
     privateKey: process.env.PRIVATE_KEY,
-    mongo_url: process.env.MONGO_URL
+    mongo_url: process.env.MONGO_URL,
+    persistence: process.env.PERSISTENCE
 
 }
 

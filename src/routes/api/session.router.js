@@ -1,8 +1,8 @@
 import { Router } from "express"
-import { passportCall } from "../middlewares/passportCall.js"
-import { authorization } from "../middlewares/authorization.middlewares.js"
+import { passportCall } from "../../middlewares/passportCall.js"
+import { authorization } from "../../middlewares/authorization.middlewares.js"
 
-import { SessionsController } from "../controllers/sessions.controllers.js"
+import { SessionsController } from "../../controllers/sessions.controllers.js"
 
 export const router5 = Router()
 export const {
