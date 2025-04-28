@@ -5,7 +5,7 @@ export const router4 = Router()
 
 router4.get('/setcookiessinged', (req,res) =>{ // Declaro la cookie
     res
-        .cookie('CoderCookieSinged', 'Es una cookie muy poderosa!', { maxAge: '10000000', signed: true}) // Instrucciónde config
+        .cookie('CoderCookieSinged', 'Es una cookie muy poderosa!', { maxAge: '10000000', signed: true}) // Instrucción de config
         .send('Cookie configurada!')
 })
 

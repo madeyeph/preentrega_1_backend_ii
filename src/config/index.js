@@ -1,6 +1,7 @@
 import mongoose from "mongoose"
 import dotenv from "dotenv"
 import { programProcess } from "../process.js"
+import { MongoSingleton } from "../MongoSingleton.js"
 
 const { mode } = programProcess.opts()
 dotenv.config({
@@ -15,7 +16,5 @@ export const configObject = {
 }
 
 export const connectDB = () => {
-    console.log ('Base de Datos Online!')
-    return mongoose.connect('mongodb+srv://dbenavides:CoderCoder123@cluster0.wgxwo.mongodb.net/datosProductos?retryWrites=true&w=majority&appName=Cluster0')
-
+    return MongoSingleton.getInstance('mongodb+srv://dbenavides:CoderCoder123@cluster0.wgxwo.mongodb.net/datosProductos?retryWrites=true&w=majority&appName=Cluster0')
 }
