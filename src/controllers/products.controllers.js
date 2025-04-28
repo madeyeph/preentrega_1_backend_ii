@@ -52,10 +52,10 @@ export class ProductsController{
 
     getProduct = async (req, res) => {
       res.setHeader('Content-Type', 'application/json')
-      const pid = req.params.pid
+      const {pid} = req.params
     
       try {
-          const result = await this.service.getProduct()
+          const result = await this.service.getProduct({_id:pid})
     
           if (result && result.code === 500) {
               return procesaErrores({ message: result.error }, res)
@@ -65,7 +65,7 @@ export class ProductsController{
               return res.status(404).json({ error: result.error })
           }
     
-          return res.status(200).json({ product: result })
+          return res.status(200).json({ status: 'success', payload: products })
       } catch (error) {
           console.error("Router getProductById: Error en la ejecución:", error)
           procesaErrores(error, res)
